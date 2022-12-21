@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc src/build.ts --outDir dist --lib ES2015"
+    "build": "tsc src/compile.ts --outDir dist --lib ES2015 --esModuleInterop"
   },
   "author": "",
   "license": "ISC",
