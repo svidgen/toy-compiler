@@ -39,7 +39,7 @@ function codeAt(
 	at: number
 ) {
 	let start = at;
-	while (start >= 0 && code[start] !== "\n") {
+	while (start > 0 && code[start] !== "\n") {
 		start--;
 	}
 
@@ -61,9 +61,11 @@ function codeAt(
 		after: code.substring(at)
 	});
 
+	console.log({code, at, start});
+
 	const lineLabel = `line ${lineNumber}: `;
-	const codeline = code.substring(start + 1, end);
-	const indicatorIndent = (1 + at - start) + lineLabel.length;
+	const codeline = code.substring(start, end);
+	const indicatorIndent = (at - start) + lineLabel.length;
 	const indicatorPad = [...new Array(indicatorIndent)].map(i => ' ').join('');
 	return `${lineLabel}${codeline}\n${indicatorPad}^`;
 }
@@ -87,18 +89,15 @@ function isRecycle(
 	at: number
 ) {
 	const key = `${nodeType.name}:${at}`
-	if (!visits.has(key)) {
-		visits.set(key, 0);
-	}
-	visits.set(key, visits.get(key) + 1);
-	return visits.get(key) > 32;
+	visits.set(key, (visits.get(key) || 0) + 1);
+	return visits.get(key)! > 32;
 }
 
 export class Sequence {
 	constructor(
 		public name: string,
 		public child: TreePattern,
-		public delimiter: TreePattern = undefined,
+		public delimiter: TreePattern | undefined = undefined,
 		public optional: boolean = true
 	) {
 		registry.set(name, this);
@@ -120,7 +119,7 @@ export class Sequence {
 			this.delimiter
 		;
 
-		let subtree = child.parse({
+		let subtree = child?.parse({
 			code,
 			at,
 			breadcrumbs: [...breadcrumbs, this],
@@ -139,7 +138,7 @@ export class Sequence {
 				});
 				if (!delimiter) break;
 			}
-			subtree = child.parse({
+			subtree = child?.parse({
 				code,
 				at: (delimiter || subtree).end,
 				breadcrumbs: [...breadcrumbs, this],
@@ -158,7 +157,7 @@ export class Sequence {
 		}) : (allowEmpty ? null : raise(
 			breadcrumbs, this, code,
 			subtree?.end || at,
-			`At least one ${child.name} is required.`
+			`At least one ${child?.name} is required.`
 		));
 	}
 }
@@ -172,7 +171,7 @@ export class Union {
 		registry.set(name, this);
 	}
 
-	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null {
+	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null | undefined {
 		if (isRecycle(this, at)) throw new Error("Recursive token parsing is not allowed!");
 
 		const allowEmpty = typeof optional === 'boolean' ? optional : this.optional;
@@ -181,7 +180,7 @@ export class Union {
 			const child = typeof option === 'string' ?
 				registry.get(option) : option;
 
-			const parsed = child.parse({
+			const parsed = child?.parse({
 				code, at, optional: true,
 				breadcrumbs: [...breadcrumbs, this]
 			});
@@ -234,7 +233,7 @@ export class Recipe {
 				const _at = children.length > 0 ?
 					children[children.length - 1].end : at
 
-				const parsed = child.parse({
+				const parsed = child?.parse({
 					code,
 					at: _at,
 					breadcrumbs: [...breadcrumbs, this],

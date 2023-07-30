@@ -11,13 +11,13 @@ const output = (ast: AST): string => {
         case 'STATEMENT':
         case 'STATEMENT_BODY':
             return ast.children
-                .map(c => outputAsyncJS(c))
+                .map(c => output(c))
                 .filter(o => o).join(";")
             ;
         case 'ASSIGNMENT':
             return ast.children
                 .filter(c => c.type !== 'WHITESPACE')
-                .map(c => outputAsyncJS(c)).join(" ")
+                .map(c => output(c)).join(" ")
             ;
         case 'ASSIGNMENT_OPERATOR':
             return '=';
@@ -43,7 +43,7 @@ const syntaxTree = grammar.parse({code: `
 
     ;  abc <- xyz
 `});
-const js = syntaxTree ? outputAsyncJS(syntaxTree) : '';
+const js = syntaxTree ? output(syntaxTree) : '';
 
 console.clear();
 console.log({

@@ -6,4 +6,4 @@ const ast = MonkeyScript.parse({
 	code: readFileSync(process.argv[2], 'utf-8').trim()
 });
 
-console.dir(ast, { depth: 2 });
+console.dir(ast.children[0], { depth: 7 });
