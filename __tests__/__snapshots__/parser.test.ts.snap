@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser Tokens can parse a keyword using regex 1`] = `
+AST {
+  "children": [],
+  "code": "whatever",
+  "end": 8,
+  "start": 0,
+  "type": "T",
+}
+`;
+
+exports[`parser Tokens can parse a keyword using string 1`] = `
+AST {
+  "children": [],
+  "code": "whatever",
+  "end": 8,
+  "start": 0,
+  "type": "T",
+}
+`;
+
+exports[`parser Union of non-optional regex tokens can parse the first token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "a",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_A",
+    },
+  ],
+  "code": "a",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of non-optional regex tokens can parse the second token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "b",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_B",
+    },
+  ],
+  "code": "b",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of non-optional regex tokens fails if neither token is found 1`] = `
+" expected a A_OR_B. Must be one of TOKEN_A, TOKEN_B.
+line 0: c
+        ^"
+`;
+
+exports[`parser Union of non-optional string tokens can parse the first token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "a",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_A",
+    },
+  ],
+  "code": "a",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of non-optional string tokens can parse the second token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "b",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_B",
+    },
+  ],
+  "code": "b",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of non-optional string tokens fails if neither token is found 1`] = `
+" expected a A_OR_B. Must be one of TOKEN_A, TOKEN_B.
+line 0: c
+        ^"
+`;
+
+exports[`parser Union of optional regex tokens can parse the first token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "a",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_A",
+    },
+  ],
+  "code": "a",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of optional regex tokens can parse the second token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "b",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_B",
+    },
+  ],
+  "code": "b",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of optional string tokens can parse the first token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "a",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_A",
+    },
+  ],
+  "code": "a",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;
+
+exports[`parser Union of optional string tokens can parse the second token 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "b",
+      "end": 1,
+      "start": 0,
+      "type": "TOKEN_B",
+    },
+  ],
+  "code": "b",
+  "end": 1,
+  "start": 0,
+  "type": "A_OR_B",
+}
+`;

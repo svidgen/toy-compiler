@@ -61,7 +61,7 @@ function codeAt(
 		after: code.substring(at)
 	});
 
-	console.log({code, at, start});
+	// console.log({code, at, start});
 
 	const lineLabel = `line ${lineNumber}: `;
 	const codeline = code.substring(start, end);
@@ -91,6 +91,15 @@ function isRecycle(
 	const key = `${nodeType.name}:${at}`
 	visits.set(key, (visits.get(key) || 0) + 1);
 	return visits.get(key)! > 32;
+}
+
+export function sequence(
+	name: string,
+	child: TreePattern,
+	delimiter: TreePattern | undefined = undefined,
+	optional: boolean = true
+) {
+	return new Sequence(name, child, delimiter, optional);
 }
 
 export class Sequence {
@@ -162,6 +171,14 @@ export class Sequence {
 	}
 }
 
+export function union(
+	name: string,
+	options: TreePattern[],
+	optional: boolean = false
+) {
+	return new Union(name, options, optional);
+}
+
 export class Union {
 	constructor(
 		public name: string,
@@ -206,6 +223,14 @@ export class Union {
 			}.`);
 		}
 	}
+}
+
+export function recipe(
+	name: string,
+	children: TreePattern[],
+	optional: boolean = false
+) {
+	return new Recipe(name, children, optional);
 }
 
 export class Recipe {
@@ -261,6 +286,14 @@ export class Recipe {
 	}
 }
 
+export function token(
+	name: string,
+	pattern: RegExp,
+	optional: boolean = false
+) {
+	return new Token(name, pattern, optional);
+}
+
 export class Token {
 	/**
 	 * @param name What to call the token.
@@ -268,20 +301,32 @@ export class Token {
 	 */
 	constructor(
 		public name: string,
-		public pattern: RegExp,
+		public pattern: RegExp | string,
 		public optional: boolean = false
 	) {
 		registry.set(name, this);
 	}
 
 	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null {
-		const matched = this.pattern.exec(code.substring(at));
-		return (matched && matched.index === 0) ? new AST({
-			type: this.name,
-			code: matched[0],
-			start: at,
-			end: at + matched[0].length,
-			children: [],
-		}) : null;
+		if (typeof this.pattern === 'string') {
+			const isMatched = code.startsWith(this.pattern);
+			return isMatched ? new AST({
+				// because `this.pattern` is a string, the matched code strictly equal to it
+				type: this.name,
+				code: this.pattern,
+				start: at,
+				end: at + this.pattern.length,
+				children: [],
+			}) : null;
+		} else {
+			const matched = this.pattern.exec(code.substring(at));
+			return (matched && matched.index === 0) ? new AST({
+				type: this.name,
+				code: matched[0],
+				start: at,
+				end: at + matched[0].length,
+				children: [],
+			}) : null;
+		}
 	}
 }
