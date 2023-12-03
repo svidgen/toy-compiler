@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sequence can describe a sequence without separators 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "s",
+      "end": 1,
+      "start": 0,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "o",
+      "end": 2,
+      "start": 1,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "m",
+      "end": 3,
+      "start": 2,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "e",
+      "end": 4,
+      "start": 3,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "t",
+      "end": 5,
+      "start": 4,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "h",
+      "end": 6,
+      "start": 5,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "i",
+      "end": 7,
+      "start": 6,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "n",
+      "end": 8,
+      "start": 7,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "g",
+      "end": 9,
+      "start": 8,
+      "type": "LETTER",
+    },
+  ],
+  "code": "something",
+  "end": 9,
+  "start": 0,
+  "type": "WORD",
+}
+`;
+
+exports[`sequence can describe sequences with separators 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "I",
+          "end": 1,
+          "start": 0,
+          "type": "LETTER",
+        },
+      ],
+      "code": "I",
+      "end": 1,
+      "start": 0,
+      "type": "WORD",
+    },
+  ],
+  "code": "I",
+  "end": 1,
+  "start": 0,
+  "type": "SENTENCE",
+}
+`;
