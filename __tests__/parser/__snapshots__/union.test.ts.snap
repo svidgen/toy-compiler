@@ -1,25 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser Tokens can parse a keyword using regex 1`] = `
-AST {
-  "children": [],
-  "code": "whatever",
-  "end": 8,
-  "start": 0,
-  "type": "T",
-}
-`;
-
-exports[`parser Tokens can parse a keyword using string 1`] = `
-AST {
-  "children": [],
-  "code": "whatever",
-  "end": 8,
-  "start": 0,
-  "type": "T",
-}
-`;
-
 exports[`parser Union of non-optional regex tokens can parse the first token 1`] = `
 AST {
   "children": [

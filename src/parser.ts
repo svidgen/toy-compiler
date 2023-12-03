@@ -288,7 +288,7 @@ export class Recipe {
 
 export function token(
 	name: string,
-	pattern: RegExp,
+	pattern: RegExp | string,
 	optional: boolean = false
 ) {
 	return new Token(name, pattern, optional);
