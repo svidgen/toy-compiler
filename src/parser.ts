@@ -11,15 +11,19 @@ export class AST {
 	public end: number;
 	public children: AST[];
 
-	constructor(
-		{ type, code, start, end, children }: {
-			type: string,
-			code: string,
-			start: number,
-			end: number,
-			children: AST[]
-		}
-	) {
+	constructor({
+		type,
+		code,
+		start,
+		end,
+		children,
+	}: {
+		type: string;
+		code: string;
+		start: number;
+		end: number;
+		children: AST[];
+	}) {
 		this.type = type;
 		this.code = code;
 		this.start = start;
@@ -30,14 +34,11 @@ export class AST {
 	}
 
 	public get(type: string): AST[] {
-		return this.children.filter(c => c.type === type);
+		return this.children.filter((c) => c.type === type);
 	}
 }
 
-function codeAt(
-	code: string,
-	at: number
-) {
+function codeAt(code: string, at: number) {
 	let start = at;
 	while (start > 0 && code[start] !== "\n") {
 		start--;
@@ -55,18 +56,21 @@ function codeAt(
 		i--;
 	}
 
-	false && console.log({
-		before: code.substring(0, at),
-		at,
-		after: code.substring(at)
-	});
+	false &&
+		console.log({
+			before: code.substring(0, at),
+			at,
+			after: code.substring(at),
+		});
 
 	// console.log({code, at, start});
 
 	const lineLabel = `line ${lineNumber}: `;
 	const codeline = code.substring(start, end);
-	const indicatorIndent = (at - start) + lineLabel.length;
-	const indicatorPad = [...new Array(indicatorIndent)].map(i => ' ').join('');
+	const indicatorIndent = at - start + lineLabel.length;
+	const indicatorPad = [...new Array(indicatorIndent)]
+		.map((i) => " ")
+		.join("");
 	return `${lineLabel}${codeline}\n${indicatorPad}^`;
 }
 
@@ -78,21 +82,26 @@ function raise(
 	message: string
 ): null {
 	const location = codeAt(code, at);
-	const trail = breadcrumbs.map(b => b.name).join(':');
+	const trail = breadcrumbs.map((b) => b.name).join(":");
 	throw new Error(
 		`${trail} expected a ${nodeType.name}. ${message}\n${location}`
 	);
 }
 
-function isRecycle(
-	nodeType: TreePatternObject,
-	at: number
-) {
-	const key = `${nodeType.name}:${at}`
+function isRecycle(nodeType: TreePatternObject, at: number) {
+	const key = `${nodeType.name}:${at}`;
 	visits.set(key, (visits.get(key) || 0) + 1);
 	return visits.get(key)! > 32;
 }
 
+/**
+ *
+ * @param name
+ * @param child Definition for each member.
+ * @param delimiter If given, it *must* be present between members.
+ * @param optional
+ * @returns
+ */
 export function sequence(
 	name: string,
 	child: TreePattern,
@@ -112,62 +121,80 @@ export class Sequence {
 		registry.set(name, this);
 	}
 
-	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null {
-		const allowEmpty = typeof optional === 'boolean' ? optional : this.optional;
-		if (isRecycle(this, at)) throw new Error("Recursive token parsing is not allowed!");
+	parse({
+		code,
+		at = 0,
+		optional = undefined,
+		breadcrumbs = [],
+	}: {
+		code: string;
+		at?: number;
+		optional?: boolean;
+		breadcrumbs?: TreePatternObject[];
+	}): AST | null {
+		const allowEmpty =
+			typeof optional === "boolean" ? optional : this.optional;
+		if (isRecycle(this, at))
+			throw new Error("Recursive token parsing is not allowed!");
 
 		const children: AST[] = [];
 
-		const child = typeof this.child === 'string' ?
-			registry.get(this.child) :
-			this.child
-		;
-
-		const Delimiter = typeof this.delimiter === 'string' ?
-			registry.get(this.delimiter) :
-			this.delimiter
-		;
-
+		const child =
+			typeof this.child === "string"
+				? registry.get(this.child)
+				: this.child;
+		const Delimiter =
+			typeof this.delimiter === "string"
+				? registry.get(this.delimiter)
+				: this.delimiter;
 		let subtree = child?.parse({
 			code,
 			at,
 			breadcrumbs: [...breadcrumbs, this],
-			optional: allowEmpty
+			optional: allowEmpty,
 		});
 
 		while (subtree) {
 			children.push(subtree);
+
 			let delimiter;
 			if (Delimiter) {
 				delimiter = Delimiter.parse({
 					code,
 					at: subtree.end,
 					breadcrumbs: [...breadcrumbs, this],
-					optional: true
+					optional: true,
 				});
-				if (!delimiter) break;
+				if (delimiter === null || delimiter === undefined) break;
 			}
+
 			subtree = child?.parse({
 				code,
 				at: (delimiter || subtree).end,
 				breadcrumbs: [...breadcrumbs, this],
-				optional: true
+				optional: true,
 			});
 		}
 
 		// down the road, this may actually need to return an AST with
 		// an empty children collection if allowEmpty is true.
-		return children.length > 0 ? new AST({
-			type: this.name,
-			code: code.substring(at, children[children.length - 1].end),
-			start: at,
-			end: children[children.length - 1]?.end || at,
-			children
-		}) : (allowEmpty ? null : raise(
-			breadcrumbs, this, code,
-			subtree?.end || at,
-			`At least one ${child?.name} is required.`
-		));
+		return children.length > 0
+			? new AST({
+					type: this.name,
+					code: code.substring(at, children[children.length - 1].end),
+					start: at,
+					end: children[children.length - 1]?.end || at,
+					children,
+			  })
+			: allowEmpty
+			? null
+			: raise(
+					breadcrumbs,
+					this,
+					code,
+					subtree?.end || at,
+					`At least one ${child?.name} is required.`
+			  );
 	}
 }
 
@@ -188,18 +215,32 @@ export class Union {
 		registry.set(name, this);
 	}
 
-	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null | undefined {
-		if (isRecycle(this, at)) throw new Error("Recursive token parsing is not allowed!");
+	parse({
+		code,
+		at = 0,
+		optional = undefined,
+		breadcrumbs = [],
+	}: {
+		code: string;
+		at?: number;
+		optional?: boolean;
+		breadcrumbs?: TreePatternObject[];
+	}): AST | null | undefined {
+		if (isRecycle(this, at))
+			throw new Error("Recursive token parsing is not allowed!");
 
-		const allowEmpty = typeof optional === 'boolean' ? optional : this.optional;
+		const allowEmpty =
+			typeof optional === "boolean" ? optional : this.optional;
 
 		for (const option of this.options) {
-			const child = typeof option === 'string' ?
-				registry.get(option) : option;
+			const child =
+				typeof option === "string" ? registry.get(option) : option;
 
 			const parsed = child?.parse({
-				code, at, optional: true,
-				breadcrumbs: [...breadcrumbs, this]
+				code,
+				at,
+				optional: true,
+				breadcrumbs: [...breadcrumbs, this],
 			});
 
 			if (parsed) {
@@ -216,11 +257,15 @@ export class Union {
 		if (allowEmpty) {
 			return null;
 		} else {
-			raise(breadcrumbs, this, code, at, `Must be one of ${
-				this.options
-					.map(o => typeof o === 'string' ? o : o.name)
-					.join(', ')
-			}.`);
+			raise(
+				breadcrumbs,
+				this,
+				code,
+				at,
+				`Must be one of ${this.options
+					.map((o) => (typeof o === "string" ? o : o.name))
+					.join(", ")}.`
+			);
 		}
 	}
 }
@@ -242,21 +287,32 @@ export class Recipe {
 		registry.set(name, this);
 	}
 
-	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null {
-		if (isRecycle(this, at)) throw new Error("Recursive token parsing is not allowed!");
+	parse({
+		code,
+		at = 0,
+		optional = undefined,
+		breadcrumbs = [],
+	}: {
+		code: string;
+		at?: number;
+		optional?: boolean;
+		breadcrumbs?: TreePatternObject[];
+	}): AST | null {
+		if (isRecycle(this, at))
+			throw new Error("Recursive token parsing is not allowed!");
 
 		const children: AST[] = [];
-		const allowEmpty = typeof optional === 'boolean' ? optional : this.optional;
+		const allowEmpty =
+			typeof optional === "boolean" ? optional : this.optional;
 
 		try {
 			for (const option of this.children) {
-				const child = typeof option === 'string' ?
-					registry.get(option) :
-					option
-				;
-
-				const _at = children.length > 0 ?
-					children[children.length - 1].end : at
+				const child =
+					typeof option === "string" ? registry.get(option) : option;
+				const _at =
+					children.length > 0
+						? children[children.length - 1].end
+						: at;
 
 				const parsed = child?.parse({
 					code,
@@ -307,26 +363,40 @@ export class Token {
 		registry.set(name, this);
 	}
 
-	parse({code, at = 0, optional = undefined, breadcrumbs = []}: {code: string, at?: number, optional?: boolean, breadcrumbs?: TreePatternObject[]}): AST | null {
-		if (typeof this.pattern === 'string') {
-			const isMatched = code.startsWith(this.pattern);
-			return isMatched ? new AST({
-				// because `this.pattern` is a string, the matched code strictly equal to it
-				type: this.name,
-				code: this.pattern,
-				start: at,
-				end: at + this.pattern.length,
-				children: [],
-			}) : null;
+	parse({
+		code,
+		at = 0,
+		optional = undefined,
+		breadcrumbs = [],
+	}: {
+		code: string;
+		at?: number;
+		optional?: boolean;
+		breadcrumbs?: TreePatternObject[];
+	}): AST | null {
+		if (typeof this.pattern === "string") {
+			const isMatched = code.substring(at).startsWith(this.pattern);
+			return isMatched
+				? new AST({
+						// because `this.pattern` is a string, the matched code strictly equal to it
+						type: this.name,
+						code: this.pattern,
+						start: at,
+						end: at + this.pattern.length,
+						children: [],
+				  })
+				: null;
 		} else {
 			const matched = this.pattern.exec(code.substring(at));
-			return (matched && matched.index === 0) ? new AST({
-				type: this.name,
-				code: matched[0],
-				start: at,
-				end: at + matched[0].length,
-				children: [],
-			}) : null;
+			return matched && matched.index === 0
+				? new AST({
+						type: this.name,
+						code: matched[0],
+						start: at,
+						end: at + matched[0].length,
+						children: [],
+				  })
+				: null;
 		}
 	}
 }

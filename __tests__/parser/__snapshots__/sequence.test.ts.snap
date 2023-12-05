@@ -1,6 +1,302 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`sequence can describe a sequence without separators 1`] = `
+exports[`sequence can parse a sequence with separators until EOS 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "S",
+          "end": 1,
+          "start": 0,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "o",
+          "end": 2,
+          "start": 1,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "r",
+          "end": 3,
+          "start": 2,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "t",
+          "end": 4,
+          "start": 3,
+          "type": "LETTER",
+        },
+      ],
+      "code": "Sort",
+      "end": 4,
+      "start": 0,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "o",
+          "end": 6,
+          "start": 5,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "f",
+          "end": 7,
+          "start": 6,
+          "type": "LETTER",
+        },
+      ],
+      "code": "of",
+      "end": 7,
+      "start": 5,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "a",
+          "end": 9,
+          "start": 8,
+          "type": "LETTER",
+        },
+      ],
+      "code": "a",
+      "end": 9,
+      "start": 8,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "s",
+          "end": 11,
+          "start": 10,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 12,
+          "start": 11,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "n",
+          "end": 13,
+          "start": 12,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "t",
+          "end": 14,
+          "start": 13,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 15,
+          "start": 14,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "n",
+          "end": 16,
+          "start": 15,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "c",
+          "end": 17,
+          "start": 16,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 18,
+          "start": 17,
+          "type": "LETTER",
+        },
+      ],
+      "code": "sentence",
+      "end": 18,
+      "start": 10,
+      "type": "WORD",
+    },
+  ],
+  "code": "Sort of a sentence",
+  "end": 18,
+  "start": 0,
+  "type": "SENTENCE",
+}
+`;
+
+exports[`sequence can parse a sequence with separators until end of sequence prior to EOS 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "S",
+          "end": 1,
+          "start": 0,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "o",
+          "end": 2,
+          "start": 1,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "r",
+          "end": 3,
+          "start": 2,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "t",
+          "end": 4,
+          "start": 3,
+          "type": "LETTER",
+        },
+      ],
+      "code": "Sort",
+      "end": 4,
+      "start": 0,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "o",
+          "end": 6,
+          "start": 5,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "f",
+          "end": 7,
+          "start": 6,
+          "type": "LETTER",
+        },
+      ],
+      "code": "of",
+      "end": 7,
+      "start": 5,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "a",
+          "end": 9,
+          "start": 8,
+          "type": "LETTER",
+        },
+      ],
+      "code": "a",
+      "end": 9,
+      "start": 8,
+      "type": "WORD",
+    },
+    AST {
+      "children": [
+        AST {
+          "children": [],
+          "code": "s",
+          "end": 11,
+          "start": 10,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 12,
+          "start": 11,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "n",
+          "end": 13,
+          "start": 12,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "t",
+          "end": 14,
+          "start": 13,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 15,
+          "start": 14,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "n",
+          "end": 16,
+          "start": 15,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "c",
+          "end": 17,
+          "start": 16,
+          "type": "LETTER",
+        },
+        AST {
+          "children": [],
+          "code": "e",
+          "end": 18,
+          "start": 17,
+          "type": "LETTER",
+        },
+      ],
+      "code": "sentence",
+      "end": 18,
+      "start": 10,
+      "type": "WORD",
+    },
+  ],
+  "code": "Sort of a sentence",
+  "end": 18,
+  "start": 0,
+  "type": "SENTENCE",
+}
+`;
+
+exports[`sequence can parse a sequence without separators until EOS 1`] = `
 AST {
   "children": [
     AST {
@@ -74,28 +370,76 @@ AST {
 }
 `;
 
-exports[`sequence can describe sequences with separators 1`] = `
+exports[`sequence can parse a sequence without separators until end of sequence prior to EOS 1`] = `
 AST {
   "children": [
     AST {
-      "children": [
-        AST {
-          "children": [],
-          "code": "I",
-          "end": 1,
-          "start": 0,
-          "type": "LETTER",
-        },
-      ],
-      "code": "I",
+      "children": [],
+      "code": "s",
       "end": 1,
       "start": 0,
-      "type": "WORD",
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "o",
+      "end": 2,
+      "start": 1,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "m",
+      "end": 3,
+      "start": 2,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "e",
+      "end": 4,
+      "start": 3,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "t",
+      "end": 5,
+      "start": 4,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "h",
+      "end": 6,
+      "start": 5,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "i",
+      "end": 7,
+      "start": 6,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "n",
+      "end": 8,
+      "start": 7,
+      "type": "LETTER",
+    },
+    AST {
+      "children": [],
+      "code": "g",
+      "end": 9,
+      "start": 8,
+      "type": "LETTER",
     },
   ],
-  "code": "I",
-  "end": 1,
+  "code": "something",
+  "end": 9,
   "start": 0,
-  "type": "SENTENCE",
+  "type": "WORD",
 }
 `;

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`recipe can parse a simple, static recipe 1`] = `
+AST {
+  "children": [
+    AST {
+      "children": [],
+      "code": "a",
+      "end": 1,
+      "start": 0,
+      "type": "LETTER_A",
+    },
+    AST {
+      "children": [],
+      "code": "b",
+      "end": 2,
+      "start": 1,
+      "type": "LETTER_B",
+    },
+    AST {
+      "children": [],
+      "code": "c",
+      "end": 3,
+      "start": 2,
+      "type": "LETTER_C",
+    },
+  ],
+  "code": "abc",
+  "end": 3,
+  "start": 0,
+  "type": "RECIPE_ABC",
+}
+`;

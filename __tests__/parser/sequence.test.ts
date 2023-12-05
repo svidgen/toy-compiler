@@ -1,4 +1,4 @@
-import { sequence, token, union } from "../../src/parser";
+import { sequence, token } from "../../src/parser";
 
 describe("sequence", () => {
 	// not normally how we'd model letters and words, but for the purpose
@@ -8,19 +8,27 @@ describe("sequence", () => {
 	const SPACE = token("SPACE", " ");
 	const SENTENCE = sequence("SENTENCE", WORD, SPACE);
 
-	it("can describe a sequence without separators", () => {
+	it("can parse a sequence without separators until EOS", () => {
 		const code = "something";
 		const ast = WORD.parse({ code });
 		expect(ast).toMatchSnapshot();
 	});
 
-	it("can describe sequences with separators", () => {
-		const code = "I ran around at the zoo";
-		const ast = SENTENCE.parse({ code });
-		console.log({ ast });
+	it("can parse a sequence without separators until end of sequence prior to EOS", () => {
+		const code = "something with extra words";
+		const ast = WORD.parse({ code });
+		expect(ast).toMatchSnapshot();
+	});
 
-		// AST is wrong ...
-		expect(true).toBe(false);
-		// expect(ast).toMatchSnapshot();
+	it("can parse a sequence with separators until EOS", () => {
+		const code = "Sort of a sentence";
+		const ast = SENTENCE.parse({ code });
+		expect(ast).toMatchSnapshot();
+	});
+
+	it("can parse a sequence with separators until end of sequence prior to EOS", () => {
+		const code = "Sort of a sentence. And then another one.";
+		const ast = SENTENCE.parse({ code });
+		expect(ast).toMatchSnapshot();
 	});
 });
