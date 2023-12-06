@@ -88,10 +88,17 @@ function raise(
 	);
 }
 
-function isRecycle(nodeType: TreePatternObject, at: number) {
-	const key = `${nodeType.name}:${at}`;
+function isRecycle(breadcrumbs: TreePatternObject[], at: number) {
+	// special case. if `breadcrumbs.length` is exactly `1` and `at` is exactly `0`,
+	// this is the entrypoint into parsing, and we need to clear the visit log.
+	// otherwise, we get immediate collisions if we try to parse a new document.
+	// TODO: make language and parse contexts instead.
+	if (breadcrumbs.length === 1 && at === 0) visits.clear();
+
+	const LIMIT = 1;
+	const key = `${breadcrumbs.map(b => b.name).join('.')}:${at}`;
 	visits.set(key, (visits.get(key) || 0) + 1);
-	return visits.get(key)! > 32;
+	return visits.get(key)! > LIMIT;
 }
 
 /**
@@ -134,7 +141,7 @@ export class Sequence {
 	}): AST | null {
 		const allowEmpty =
 			typeof optional === "boolean" ? optional : this.optional;
-		if (isRecycle(this, at))
+		if (isRecycle([...breadcrumbs, this], at))
 			throw new Error("Recursive token parsing is not allowed!");
 
 		const children: AST[] = [];
@@ -226,7 +233,7 @@ export class Union {
 		optional?: boolean;
 		breadcrumbs?: TreePatternObject[];
 	}): AST | null | undefined {
-		if (isRecycle(this, at))
+		if (isRecycle([...breadcrumbs, this], at))
 			throw new Error("Recursive token parsing is not allowed!");
 
 		const allowEmpty =
@@ -298,7 +305,7 @@ export class Recipe {
 		optional?: boolean;
 		breadcrumbs?: TreePatternObject[];
 	}): AST | null {
-		if (isRecycle(this, at))
+		if (isRecycle([...breadcrumbs, this], at))
 			throw new Error("Recursive token parsing is not allowed!");
 
 		const children: AST[] = [];
@@ -322,6 +329,14 @@ export class Recipe {
 
 				if (parsed) {
 					children.push(parsed);
+				} else if (!child?.optional) {
+					raise(
+						[...breadcrumbs, this],
+						child!,
+						code,
+						_at,
+						''
+					);
 				}
 			}
 		} catch (err) {

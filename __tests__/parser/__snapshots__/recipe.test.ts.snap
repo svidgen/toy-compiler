@@ -11,7 +11,15 @@ AST {
       "type": "LETTER_A",
     },
     AST {
-      "children": [],
+      "children": [
+        AST {
+          "children": [],
+          "code": "b",
+          "end": 2,
+          "start": 1,
+          "type": "LETTER_B_LOWER",
+        },
+      ],
       "code": "b",
       "end": 2,
       "start": 1,
@@ -30,4 +38,52 @@ AST {
   "start": 0,
   "type": "RECIPE_ABC",
 }
+`;
+
+exports[`recipe fails on non-matching string 'a' 1`] = `
+"RECIPE_ABC expected a LETTER_B. Must be one of LETTER_B_LOWER, LETTER_B_UPPER.
+line 0: a
+         ^"
+`;
+
+exports[`recipe fails on non-matching string 'ab' 1`] = `
+"RECIPE_ABC expected a LETTER_C. 
+line 0: ab
+          ^"
+`;
+
+exports[`recipe fails on non-matching string 'b' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: b
+        ^"
+`;
+
+exports[`recipe fails on non-matching string 'bac' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: bac
+        ^"
+`;
+
+exports[`recipe fails on non-matching string 'bc' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: bc
+        ^"
+`;
+
+exports[`recipe fails on non-matching string 'c' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: c
+        ^"
+`;
+
+exports[`recipe fails on non-matching string 'cab' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: cab
+        ^"
+`;
+
+exports[`recipe fails on non-matching string 'cba' 1`] = `
+"RECIPE_ABC expected a LETTER_A. 
+line 0: cba
+        ^"
 `;
