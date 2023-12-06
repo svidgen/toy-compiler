@@ -182,6 +182,16 @@ export class Sequence {
 				breadcrumbs: [...breadcrumbs, this],
 				optional: true,
 			});
+
+			if (delimiter && !subtree) {
+				raise(
+					[...breadcrumbs, this],
+					child!,
+					code,
+					delimiter.end,
+					''
+				)
+			}
 		}
 
 		// down the road, this may actually need to return an AST with

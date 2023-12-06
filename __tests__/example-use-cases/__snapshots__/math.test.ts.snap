@@ -1515,3 +1515,27 @@ AST {
   "type": "EXPRESSION",
 }
 `;
+
+exports[`basic math use-case example throws a sane error for 1 -+ 2 1`] = `
+"EXPRESSION expected a TERM. 
+line 0: 1 -+ 2
+           ^"
+`;
+
+exports[`basic math use-case example throws a sane error for 2 *** 1 + 3 1`] = `
+"EXPRESSION expected a TERM. 
+line 0: 2 *** 1 + 3
+           ^"
+`;
+
+exports[`basic math use-case example throws a sane error for 2 */ 3 1`] = `
+"EXPRESSION expected a TERM. 
+line 0: 2 */ 3
+           ^"
+`;
+
+exports[`basic math use-case example throws a sane error for 123 - ((12 + 123) * 456 1`] = `
+"EXPRESSION expected a TERM. 
+line 0: 123 - ((12 + 123) * 456
+             ^"
+`;

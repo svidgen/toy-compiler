@@ -44,4 +44,20 @@ describe('basic math use-case example', () => {
             expect(ast).toMatchSnapshot();
         })
     }
+
+    const bad_expressions = [
+        '1 -+ 2',
+        '2 */ 3',
+        '2 *** 1 + 3',
+        '123 - ((12 + 123) * 456',
+        
+        // this one doesn't fail as expected ... not yet sure why.
+        // '(123 + 456() * (678 - 987)',
+    ] as const;
+
+    for (const code of bad_expressions) {
+        it(`throws a sane error for ${code}`, () => {
+            expect(() => EXPRESSION.parse({code})).toThrowErrorMatchingSnapshot();
+        })
+    }
 })
