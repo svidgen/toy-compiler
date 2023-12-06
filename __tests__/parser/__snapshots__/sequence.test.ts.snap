@@ -40,6 +40,13 @@ AST {
       "type": "WORD",
     },
     AST {
+      "children": [],
+      "code": " ",
+      "end": 5,
+      "start": 4,
+      "type": "SPACE",
+    },
+    AST {
       "children": [
         AST {
           "children": [],
@@ -62,6 +69,13 @@ AST {
       "type": "WORD",
     },
     AST {
+      "children": [],
+      "code": " ",
+      "end": 8,
+      "start": 7,
+      "type": "SPACE",
+    },
+    AST {
       "children": [
         AST {
           "children": [],
@@ -75,6 +89,13 @@ AST {
       "end": 9,
       "start": 8,
       "type": "WORD",
+    },
+    AST {
+      "children": [],
+      "code": " ",
+      "end": 10,
+      "start": 9,
+      "type": "SPACE",
     },
     AST {
       "children": [
@@ -188,6 +209,13 @@ AST {
       "type": "WORD",
     },
     AST {
+      "children": [],
+      "code": " ",
+      "end": 5,
+      "start": 4,
+      "type": "SPACE",
+    },
+    AST {
       "children": [
         AST {
           "children": [],
@@ -210,6 +238,13 @@ AST {
       "type": "WORD",
     },
     AST {
+      "children": [],
+      "code": " ",
+      "end": 8,
+      "start": 7,
+      "type": "SPACE",
+    },
+    AST {
       "children": [
         AST {
           "children": [],
@@ -223,6 +258,13 @@ AST {
       "end": 9,
       "start": 8,
       "type": "WORD",
+    },
+    AST {
+      "children": [],
+      "code": " ",
+      "end": 10,
+      "start": 9,
+      "type": "SPACE",
     },
     AST {
       "children": [

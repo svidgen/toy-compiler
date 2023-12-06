@@ -173,6 +173,7 @@ export class Sequence {
 					optional: true,
 				});
 				if (delimiter === null || delimiter === undefined) break;
+				children.push(delimiter);
 			}
 
 			subtree = child?.parse({
